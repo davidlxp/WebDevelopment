@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+<head>
+    <link rel="stylesheet" href="../css/style.css">
+    <title>Green Computing - Ebooks</title>
+    <script src="../javascript/app.js" type="text/javascript"></script>
+</head>
+
+<body>
+
+    <!------------ Upper Part of the whole page ------------>
+    <div class="page-up">
+        <div class="title">
+            <h1>Green Computing</h1>
+        </div>
+    </div>
+
+    <!------------ Lower Part of the whole page ------------>
+    <div class="page-down">
+
+        <!------------ Left Part of The Lower Page ------------>
+        <div class="page-down-left"> 
+
+            <!------------ Site Map ------------>
+            <div class="site-map">
+                <h2>Site Map</h2>
+                <div class="map-paperless">
+                    <h3>Paperless</h3>
+                    <ul>
+                        <li><a class="site-map-option" href="news.html" >News Online</a></li>
+                        <li><a class="site-map-option" href="class.html" >Class Meterial Online</a></li>
+                        <li><a class="site-map-option" href="paperless.html" >Paperless Office</a></li>
+                        <li><a class="site-map-option" href="ebooks.html" >E-books</a></li>
+                    </ul>
+                </div>
+                <div class="map-reduce">
+                    <h3>Reduce</h3>
+                    <ul>
+                        <li><a class="site-map-option" href="inventory.html" >Just in Time Inventory</a></li>
+                        <li><a class="site-map-option" href="meeting.html" >Online Meetings</a></li>
+                        <li><a class="site-map-option" href="egift.html" >E-gifts</a></li>
+                    </ul>
+                </div>
+                <div class="map-reuse">
+                    <h3>Reduce</h3>
+                    <ul>
+                        <li><a class="site-map-option" href="ewast.html" >Ewaste & Electronic Recycling</a></li>
+                        <li><a class="site-map-option" href="purchase.html" >Cycle of purchasing</a></li>
+                        <li><a class="site-map-option" href="computer.html" >Reusing Old computers</a></li>
+                    </ul>
+                </div>
+                <div class="map-energy">
+                    <h3>Energy</h3>
+                    <ul>
+                        <li><a class="site-map-option" href="energy.html" >Wasted Energy</a></li>
+                        <li><a class="site-map-option" href="buildings.html" >Smart Buildings</a></li>
+                        <li><a class="site-map-option" href="inefficiencies.html" >Computer inefficiencies</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!------------ Middle Part of The Lower Page ------------>
+        <div class="page-down-middle">
+
+            <!------------ Breadcrumb ------------>
+            <div class="breadcrumb">
+                <p>Green Computing >> Paperless >> E-books</p>
+            </div>
+
+            <!------------ Page Content ------------>
+
+            <!--- Images with Creative Common License From:
+            https://www.pexels.com/photo/black-tablet-computer-behind-books-1329571/
+            https://www.pexels.com/photo/forest-covered-in-white-fog-1423600/
+            --->
+
+            <div class="content"> 
+                <div class="content-title">
+                    <h2> E-books </h2>
+                </div>
+                <div class="content-detail">
+                    <p> 
+                        E-books, is convenient to get and read. It also help us, as human-beings to save the forest on the earth. 
+                        In 2021, there are 900 million of hard-copy books sold on American marke, which equals to 36 million trees 
+                        <a href="https://myreadingworld.com/how-many-trees-does-it-take-to-make-one-book/">(Source: The Conversation)</a>.
+                        These tree can make up a 600 thousands acres of forest, which is about the size of 1 Yosemite National Park. 
+                    </p>
+                    <img src="../image/ebooks.jpg" alt="ebooks">
+                    <img src="../image/trees.jpg" alt="woods">
+                    <p>
+                        Currently, the trees that we grow is way less than the trees we cut down yearly. This make the trees on 
+                        our earth decrease significantly. To protect our earth, we need to cut down less trees. E-books can make great 
+                        contribution to this process! Switching to e-books can make a big impact to foreast protection and our future 
+                        on the earth. We recommend you to use the calculator below to see how many trees are required to print a certain
+                        amount of books. And you will see how large the impact it will be to switch from hard-copy books to e-books.
+                    </p>
+
+                    <!------------ Button for Hidden Information ------------>
+                    <input type="button" value="More Info..." id="hidden-button" type="button" onclick="showOrUnshowInfo()" />
+
+                    <p id="advanced-info" style="display:none">
+                        Here are some advanced mathematics about trees and forest:<br>
+                        --> 1 standard pine tree (with 45ft usable trunk) = 10000 sheets of book paper<br>
+                        --> 50 trees = 1 acres of forest<br>
+                        --> 1 book = 200-400 papers (on average)<br>
+                    </p>
+                </div>
+            </div>
+
+            <!------------ Button for Expandable Input ------------>
+            <input type="button" value="Use Calculator" id="expandable-button" type="button" onclick="useOrCloseCalc()" />
+
+            <!------------ Calculator ------------>
+            <div id="calculator" style="display:none"> 
+
+                <p>
+                    This calculator will display the nubmer of trees needed to produce certain amount of hard-copy books. 
+                    Besides, it will also show you how many acres of forest these trees are equal to.
+                </p> 
+
+                <p>
+                    <h4>Below are some of the largest publisher in the US, and volume of books they printed in 2021:</h4>
+                    Penguin/Random House (225 millions books)<br>
+                    HarperCollins (180 millions books)<br>
+                    The Hachette Book Group (135 millions books)<br>
+                </p> 
+
+                <!------------ Button for Switching Between Simple & Complex Calculator ------------>
+                <input type="button" value="Simple Calculator" id="calc-switch-button" type="button" onclick="simpleOrComplex()"/>
+
+                <!------------ Simple Calculator ------------>
+                <div id="simple-calculator" style="display: none">
+                        <h4>Choose a publisher below to see how many trees and forest they need to print books each year:</h4> 
+                        <input type=radio name=myradio onclick="autofillSimpleCalc(225000000, 400)">Penguin/Random House<br>
+                        <input type=radio name=myradio onclick="autofillSimpleCalc(180000000, 400)">HarperCollins<br>
+                        <input type=radio name=myradio onclick="autofillSimpleCalc(135000000, 400)">The Hachette Book Group<br>
+                </div>
+
+                <!------------ Complex Calculator ------------>
+                <div id="complex-calculator">
+                    <div id="book-num-header">
+                        <h4> Number of books </h4>
+                        <input id="book-num" onmouseover="giveInputHint()" onkeydown="afterFirstCoach()">
+                        <b class="coach-mark" id="coach-step1">&nbsp&nbsp &lt ENTER A NUMBER</b>
+                        <p id="input-hint"></p>
+                    </div>
+
+                    <div id="page-num-header">
+                        <h4> Average number of pages per book </h4>
+                        <input id="page-num" onkeydown="afterSecondCoach()">
+                        <button onclick="popHelp()">Input Help</button>
+                        <b class="coach-mark" id="coach-step2" style="display:none">&nbsp&nbsp &lt ENTER A NUMBER</b>
+                    </div>
+                </div>
+
+                <!------------ Submit Button Calculator ------------>
+                <div id="calculator-submit">
+                    <p><button type="button" onclick="calcTreeNeeded()" onmouseover="removeInputHint()">Submit</button>
+                    <p class="coach-mark" id="coach-step3" style="display:none"><strong>^ PRESS SUBMIT</strong></p>
+                </div>
+
+                <!------------ Section for Showing Result ------------>
+                <p id="tree-needed"></p>
+            </div>
+
+            <!------------ Button for Opening And Closing Settings Menu ------------>
+            <input type="button" value="Settings" id="settings-button" type="button" onclick="openOrCloseSettings()"/>
+
+            <!------------ Overflow Menu for Settings ------------>
+            <div id="settings-menu" style="display:none">
+                <input type=radio id="set1" name=setting-radio >Show acres<br>
+                <input type=radio id="set2" name=setting-radio >Show forest size compared to central park<br>
+                <input type=radio id="set3" name=setting-radio checked>Show both<br>
+            </div>
+
+        </div>
+
+        <!------------ Right Part of The Lower Page ------------>
+        <div class="page-down-right">
+
+            <!------------ Navigation Bar ------------>
+            <div class="nav-button">
+                <a href="paperless.html"><input type="button" value="◄ Prev Chapter"></a>
+                <p>Paperless Office</p>
+            </div>
+            <div class="nav-button">
+                <a href="inventory.html"><input type="button" value="Next Chapter ►"></a>
+                <p>Just in Time Inventory</p>
+            </div>
+            
+        </div>
+
+    </div>
+
+    
+</body>
+
+</html>

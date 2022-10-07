@@ -1,0 +1,104 @@
+/* Style of the title */
+div.title {
+    padding: 0px 10px;
+}
+
+/* Style of the page */
+div.page-down {
+    display: flex;
+    flex-direction: row;
+}
+
+/* Style of the left section of the page */
+div.page-down-left {
+    width: 30%;
+    padding: 0px 10px;
+}   
+
+/* Style of the middle section of the page */
+div.page-down-middle {
+    width: 100%;
+    padding: 0px 20px;
+}
+
+/* Style of the right section of the page */
+div.page-down-right {
+    width: 30%;
+    padding: 0px 10px;
+}
+
+/* Style of the margin of the site map */
+div.site-map li {
+    margin: 15px 0px;
+}
+
+/* Style the breadcrumb section */
+div.breadcrumb {
+    padding: 5px 0px;
+}
+
+/* Style the words in the breadcrumb */
+div.breadcrumb p {
+    font-size: 17px;
+}
+
+/* Style the navigation area */
+div.nav-button {
+    padding: 8px 0px;
+}
+
+/* Style the text in navigation area */
+div.nav-button p {
+    font-size: 18px;
+}
+
+/* Style the input in navigation area */
+div.nav-button input {
+    font-size: 15px;
+}
+
+/* Style the main content of the page */
+div.content-detail p {
+    /* font-size: 16px; */
+}
+
+/* Style the result returned by calculator */
+#calculator {
+    padding: 10px 0px 10px 0px;
+}
+
+/* Style the images in the content-detail */
+div.content-detail img{
+    width: 40%;
+    height: 40%;
+}
+
+/* Style for the coach-mark */
+.coach-mark {
+    color: red;
+}
+
+/* Style for the expandable button */
+#expandable-button {
+    margin: 10px 0px 0px 0px;
+}
+
+/* Style for the simple-calculator area */
+#simple-calculator {
+    margin: 20px 0px 20px 0px;
+}
+
+/* Style for the calculator switch button */
+#calc-switch-button {
+    margin: 20px 0px 0px 0px;
+}
+
+/* Style for the calculator setting button */
+#settings-button {
+    display: block;
+    margin: 10px 0px 0px 0px;
+}
+
+#settings-menu {
+    margin: 10px 0px 30px 0px;
+}
