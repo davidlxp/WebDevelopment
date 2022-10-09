@@ -143,3 +143,142 @@ function openOrCloseSettings()
         document.getElementById("settings-button").value = "Settings";
     }
 }
+
+/* General function returns new data to be stored in the storage after user provides input
+ * @boxId: The ID of the input box where user provides new input
+ * @storedData: a copy of stored data from LocalStorage
+ * @maxAmount: max amount of data allowed to be stored in that variable from LocalStorage (defined by the developer) */
+function generateNewSaveInput(boxId, storedData, maxAmount)
+{
+    // Get value from input box
+    var inputVal = document.getElementById(boxId).value;
+
+    // Get the existing data
+    var data = storedData;
+
+    // If the data doesn't exist or it's an empty string
+    if (data && data !== "")
+    {
+        // Turn the saved string into array
+        var dataArray = data.split("||");
+
+        // If the array of stored data contains input value, we don't need to modify anything, return itself
+        if (dataArray.includes(inputVal))
+            return data;
+
+        // If the array exceed the MAX amount allow, remove the 1st element from "data" string
+        var arrLen = dataArray.length
+        if (arrLen >= maxAmount)
+        {
+            // Get the the index of array we start to keep to maintain the maxAmount requirement (even after adding new value)
+            var startIdx = arrLen - maxAmount + 1; 
+
+            // Copy to only keep a part of array which meet the maxAmount requirement
+            data = "";
+            for (let i = startIdx; i < arrLen; ++i)
+            {
+                data += dataArray[i];
+                if (i < arrLen - 1)
+                    data += "||";
+            }
+        }
+        
+        // Append the new value to the "data" string
+        data += "||" + inputVal;
+
+        // Return the "data" string
+        return data;
+    }
+    else
+        // Since the local storage data was empty, we only return the new data from input box
+        return inputVal;
+}
+
+/* Function attempts to save user's input which is from the "Number of books" input box */
+function saveBooksInput()
+{
+    // If local storage available, try to save value from input box to the storage
+    if (typeof(Storage) !== "undefined")
+        localStorage.booksNumHistory = generateNewSaveInput("book-num", localStorage.booksNumHistory, 3);
+}
+
+/* Function attempts to save user's input which is from the "Number of pages" input box */
+function savePagesInput()
+{
+    // If local storage available, try to save value from input box to the storage
+    if (typeof(Storage) !== "undefined")
+        localStorage.pagesNumHistory = generateNewSaveInput("page-num", localStorage.pagesNumHistory, 3);
+}
+
+/* A general function for suggest input to input box from stored data */
+function suggestInput(storedData, listId, boxId)
+{
+    // Clear the <ul>, which is the suggestion area before appending 
+    clearSuggestion(listId);
+    
+    // Check if the historical data exists
+    if (typeof(Storage) !== "undefined" && storedData)
+    {
+        // Split to a list of values for suggestion
+        var allData = storedData.split("||");
+
+        // Add the suggestions to a <ul> list in HTML
+        for (let i = 0; i < allData.length; ++i)
+        {
+            // Access one data
+            var data = allData[i];
+
+            // Create the list item
+            var listItem = document.createElement("li");
+
+            // Add class attribute to the list item
+            listItem.classList.add("suggest-list-item");
+
+            // Add value to the list item
+            listItem.appendChild(document.createTextNode(data));
+
+            // When mouse hover over the list item, it will show as a cursor
+            listItem.style.cursor = "pointer";
+
+            // Add event - when clicks on a suggestion, it will pop into the input box
+            listItem.setAttribute("onclick", "useSuggestion(" + data + ",'" + boxId + "', '" + listId + "')")
+
+            // Append the list item to the list on HTML
+            document.getElementById(listId).appendChild(listItem);
+        }
+    }
+}
+
+/* Function specialized for suggesting input for bookNums input box */
+function suggestBooksInput()
+{
+    suggestInput(localStorage.booksNumHistory, "book-num-suggestion", "book-num");
+}
+
+/* Function specialized for suggesting input for pageNums input box */
+function suggestPagesInput()
+{
+    suggestInput(localStorage.pagesNumHistory, "page-num-suggestion", "page-num");
+}
+
+/* Function clear the suggestion that shown in a list by setting it to "" */
+function clearSuggestion(listId)
+{
+    // Clear up an <ul> list before attempting another suggestion
+    document.getElementById(listId).innerHTML = "";
+}
+
+/* Function display suggestion to the input box
+ * This function will be triggered by event 
+ * @val: suggestion value pass to the input box 
+ * @boxId: the ID of input box
+ * @listId: the list we want to clear after providing suggestion */
+function useSuggestion(val, boxId, listId)
+{
+    // Assign value
+    document.getElementById(boxId).value = val;
+
+    // Clear a suggestion list after suggestion
+    clearSuggestion(listId);
+}
+

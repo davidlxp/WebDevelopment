@@ -99,6 +99,13 @@ div.content-detail img{
     margin: 10px 0px 0px 0px;
 }
 
+/* Style for the setting menu */
 #settings-menu {
     margin: 10px 0px 30px 0px;
 }
+
+/* Style for the list items in the suggestion list */
+.suggest-list-item {
+
+}
+

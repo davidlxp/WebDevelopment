@@ -142,22 +142,24 @@
                 <div id="complex-calculator">
                     <div id="book-num-header">
                         <h4> Number of books </h4>
-                        <input id="book-num" onmouseover="giveInputHint()" onkeydown="afterFirstCoach()">
+                        <input id="book-num" onmouseover="giveInputHint()" onkeydown="afterFirstCoach(); clearSuggestion('book-num-suggestion')" onclick="suggestBooksInput()">
                         <b class="coach-mark" id="coach-step1">&nbsp&nbsp &lt ENTER A NUMBER</b>
+                        <ul id="book-num-suggestion"></ul>
                         <p id="input-hint"></p>
                     </div>
 
                     <div id="page-num-header">
                         <h4> Average number of pages per book </h4>
-                        <input id="page-num" onkeydown="afterSecondCoach()">
+                        <input id="page-num" onkeydown="afterSecondCoach(); clearSuggestion('page-num-suggestion')" onclick="suggestPagesInput()">
                         <button onclick="popHelp()">Input Help</button>
+                        <ul id="page-num-suggestion"></ul>
                         <b class="coach-mark" id="coach-step2" style="display:none">&nbsp&nbsp &lt ENTER A NUMBER</b>
                     </div>
                 </div>
 
                 <!------------ Submit Button Calculator ------------>
                 <div id="calculator-submit">
-                    <p><button type="button" onclick="calcTreeNeeded()" onmouseover="removeInputHint()">Submit</button>
+                    <p><button type="button" onclick="calcTreeNeeded(); saveBooksInput(); savePagesInput();" onmouseover="removeInputHint()">Submit</button>
                     <p class="coach-mark" id="coach-step3" style="display:none"><strong>^ PRESS SUBMIT</strong></p>
                 </div>
 
