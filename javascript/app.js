@@ -126,8 +126,12 @@ function showOrUnshowInfo() {
 /* Function does autofill for the simple calculator */
 function autofillSimpleCalc(books, pages)
 {
+    // Fill the input box
     document.getElementById("book-num").value = parseFloat(books);
     document.getElementById("page-num").value = parseFloat(pages);
+
+    // Update the completeness meter
+    updateMeterFromInput();
 }
 
 /* Function dynamically shows simple & complex calculator based on user's choice with this button */
