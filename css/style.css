@@ -105,7 +105,9 @@ div.content-detail img{
 }
 
 /* Style for the list items in the suggestion list */
-.suggest-list-item {
-
+#completeness-meter {
+    margin: 30px 0px 30px 0px;
+    font-size: 20px;
+    color: #1e81b0
 }
 

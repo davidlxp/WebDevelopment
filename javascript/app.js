@@ -2,9 +2,24 @@
 /* Function calculates number of tree needed */
 function calcTreeNeeded() {
 
+    // Firstly, remove content from "tree-needed" section 
+    document.getElementById("tree-needed").innerHTML = "";
+
+    // Get the string representation of input values
+    var bookNumStr = document.getElementById("book-num").value;
+    var pageNumStr = document.getElementById("page-num").value;
+
+    // Don't allow submit if any of the input box is empty or is not a number
+    if (bookNumStr === "" || isNaN(bookNumStr) || pageNumStr === "" || isNaN(pageNumStr))
+    {
+        // Send a warning!!!
+        document.getElementById("tree-needed").innerHTML = "Invalid Input!!! Please provide numbers!";
+        return;
+    }
+
     // Number of books and pages
-    var bookNum = parseFloat(document.getElementById("book-num").value);
-    var avgPageNum = parseFloat(document.getElementById("page-num").value);
+    var bookNum = parseFloat(bookNumStr);
+    var avgPageNum = parseFloat(pageNumStr);
 
     // Calculate total pages
     var totalPageNum = bookNum * avgPageNum;
@@ -29,7 +44,7 @@ function calcTreeNeeded() {
     // Construct a sentence based on user's settings choice
     var result = "These books require to cut down " + treeNeededNum + " trees to produce! ";
     if (s1 || s3)
-        result += "It's about " + acres + " acres of forest. ";
+        result += "It's about " + acres.toFixed(4) + " acres of forest. ";
     if (s2 || s3)
         result += "The size of forest constitued by these trees is about " + parks + " NYC central park.";
   
@@ -38,6 +53,13 @@ function calcTreeNeeded() {
 
     // Disappear the last coach mark after submission
     document.getElementById("coach-step3").style.display="none";
+
+    // Save books and pages value only after submission is successfully processed
+    saveBooksInput(); 
+    savePagesInput();
+
+    // Update Completeness Meter when the submit button is clicked and successfully submitted 
+    updateMeterFromSubmit();
 }
 
 /* Function reactively pops up hint */
@@ -156,13 +178,17 @@ function generateNewSaveInput(boxId, storedData, maxAmount)
     // Get the existing data
     var data = storedData;
 
+    // If the inputVal is a empty string, don't save it
+    if (inputVal.trim() === "")
+        return data;
+
     // If the data doesn't exist or it's an empty string
     if (data && data !== "")
     {
         // Turn the saved string into array
         var dataArray = data.split("||");
 
-        // If the array of stored data contains input value, we don't need to modify anything, return itself
+        // If the array of stored data contains input value, we don't need to modify anything, return itself.
         if (dataArray.includes(inputVal))
             return data;
 
@@ -199,7 +225,14 @@ function saveBooksInput()
 {
     // If local storage available, try to save value from input box to the storage
     if (typeof(Storage) !== "undefined")
-        localStorage.booksNumHistory = generateNewSaveInput("book-num", localStorage.booksNumHistory, 3);
+    {
+        // Get the newBookSave for saving to storage
+        var newBookSave = generateNewSaveInput("book-num", localStorage.booksNumHistory, 3);
+
+        // If the newBookSave is not "undefined", then save it
+        if (typeof(newBookSave) !== "undefined")
+            localStorage.booksNumHistory = newBookSave;
+    }
 }
 
 /* Function attempts to save user's input which is from the "Number of pages" input box */
@@ -207,10 +240,20 @@ function savePagesInput()
 {
     // If local storage available, try to save value from input box to the storage
     if (typeof(Storage) !== "undefined")
-        localStorage.pagesNumHistory = generateNewSaveInput("page-num", localStorage.pagesNumHistory, 3);
+    {
+        // Get the newPageSave for saving to storage
+        var newPageSave = generateNewSaveInput("page-num", localStorage.pagesNumHistory, 3);
+
+        // If the newSaveInput is not "undefined", then save it
+        if (typeof(newPageSave) !== "undefined")
+            localStorage.pagesNumHistory = newPageSave;
+    }
 }
 
-/* A general function for suggest input to input box from stored data */
+/* A general function for suggest input to input box from stored data 
+ * @storedData: the data stored in the LocalStorage which we want to generate suggestions from 
+ * @listId: the ID of the list in HTML that we want to place the suggestions
+ * @boxId: the input box which user potentially want to fill with the suggested data */
 function suggestInput(storedData, listId, boxId)
 {
     // Clear the <ul>, which is the suggestion area before appending 
@@ -261,7 +304,8 @@ function suggestPagesInput()
     suggestInput(localStorage.pagesNumHistory, "page-num-suggestion", "page-num");
 }
 
-/* Function clear the suggestion that shown in a list by setting it to "" */
+/* Function clear the suggestion that shown in a list by setting it to "" 
+ * @listId: ID of the list on HTML that we want to clear */
 function clearSuggestion(listId)
 {
     // Clear up an <ul> list before attempting another suggestion
@@ -282,3 +326,53 @@ function useSuggestion(val, boxId, listId)
     clearSuggestion(listId);
 }
 
+/* Function modify completeness meter when user interact with input boxes */
+function updateMeterFromInput()
+{
+    // Get the input from input boxes
+    var bookNumInput = document.getElementById("book-num").value;
+    var pageNumInput = document.getElementById("page-num").value;
+
+    // Check if the input is valid
+    var bookEmpty = typeof(bookNumInput) === "undefined" || bookNumInput === "";
+    var pageEmpty = typeof(pageNumInput) === "undefined" || pageNumInput === "";
+
+    // Dynamically modify the progress meter based on judges
+    if (bookEmpty && pageEmpty)
+        document.getElementById("completeness-meter").innerHTML = "Your Progress: 0% <br>(Next Step - provide a book OR page number)";
+    else if (!bookEmpty && !pageEmpty)
+        document.getElementById("completeness-meter").innerHTML = "Your Progress: 90% <br>(Next Step - click submit!)";
+    else if (bookEmpty)
+        document.getElementById("completeness-meter").innerHTML = "Your Progress: 40% <br>(Next Step - provide a book number)";
+    else
+        document.getElementById("completeness-meter").innerHTML = "Your Progress: 40% <br>(Next Step - provide a page number)";
+}
+
+/* Function modify completeness meter when user interact with calculation submit button */
+function updateMeterFromSubmit()
+{
+    // Get the input from input boxes
+    var bookNumInput = document.getElementById("book-num").value;
+    var pageNumInput = document.getElementById("page-num").value;
+
+    // Check if the input is valid
+    var bookEmpty = typeof(bookNumInput) === "undefined" || bookNumInput === "";
+    var pageEmpty = typeof(pageNumInput) === "undefined" || pageNumInput === "";
+
+    // Only update the progress to 100% if input boxes have information
+    if (!bookEmpty && !pageEmpty)
+        document.getElementById("completeness-meter").innerHTML = "Your Progress: 100% <br>Congratulation, calculation done!";
+}
+
+
+
+
+
+
+
+/* Testing function which helps with remove stored data */
+function clearStorage()
+{
+    localStorage.removeItem("booksNumHistory");
+    localStorage.removeItem("pagesNumHistory");
+}
