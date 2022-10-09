@@ -1,4 +1,9 @@
 
+/* Listener checks the "click" status of whole page */
+document.addEventListener("click", (event) => {
+    closeSuggestOnOutsideClick();
+})
+
 /* Function calculates number of tree needed */
 function calcTreeNeeded() {
 
@@ -284,9 +289,6 @@ function suggestInput(storedData, listId, boxId)
             // Add value to the list item
             listItem.appendChild(document.createTextNode(data));
 
-            // When mouse hover over the list item, it will show as a cursor
-            listItem.style.cursor = "pointer";
-
             // Add event - when clicks on a suggestion, it will pop into the input box
             listItem.setAttribute("onclick", "useSuggestion(" + data + ",'" + boxId + "', '" + listId + "')")
 
@@ -368,15 +370,27 @@ function updateMeterFromSubmit()
         document.getElementById("completeness-meter").innerHTML = "Your Progress: 100% <br>Congratulation, calculation done!";
 }
 
+// Funtion closes input suggestions if a click outside of input boxes are detected
+function closeSuggestOnOutsideClick()
+{
+    // Check if the book and page input box is clicked or not
+    var isBookInputClick = document.getElementById("book-num").contains(event.target);
+    var isPageInputClick = document.getElementById("page-num").contains(event.target);
 
+    // Try to remove suggestions for book & page number
+    if (!isBookInputClick)
+        clearSuggestion("book-num-suggestion");
+    if (!isPageInputClick)
+        clearSuggestion("page-num-suggestion");
+}
 
 
 
 
 
 /* Testing function which helps with remove stored data */
-function clearStorage()
-{
-    localStorage.removeItem("booksNumHistory");
-    localStorage.removeItem("pagesNumHistory");
-}
+// function clearStorage()
+// {
+//     localStorage.removeItem("booksNumHistory");
+//     localStorage.removeItem("pagesNumHistory");
+// }

@@ -7,6 +7,7 @@ div.title {
 div.page-down {
     display: flex;
     flex-direction: row;
+    margin: 0px 0px 100px 0px;
 }
 
 /* Style of the left section of the page */
@@ -110,4 +111,26 @@ div.content-detail img{
     font-size: 20px;
     color: #1e81b0
 }
+
+
+/* Style for the <li> suggestion list item */
+.suggest-list-item {
+    cursor: pointer;
+    color: black;
+    padding: 5px 8px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Style for the <ul> suggestion list zone */
+.suggestion-zone {
+    display: inline-block; 
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+
 
