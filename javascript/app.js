@@ -1,4 +1,7 @@
 
+/* Variable defines number of suggestions allowed for input box */
+var maxNumOfSuggestion = 3;
+
 /* Listener checks the "click" status of whole page */
 document.addEventListener("click", (event) => {
     closeSuggestOnOutsideClick();
@@ -69,12 +72,12 @@ function calcTreeNeeded() {
 
 /* Function reactively pops up hint */
 function popHelp() {
-    alert("Please type any number between 200 to 400 for the 'Average number of pages per book' input box");
+    alert("Please type number of books in the input box. For example, 2000000. We will calculate number of trees needed to produce these amount of books for you.");
 }
 
 /* Function gives proactive input hints */
 function giveInputHint() {
-    document.getElementById("input-hint").innerHTML = "Please provide any number of books, like a number between 1000 to 4000";
+    document.getElementById("input-hint").innerHTML = "Please provide a number betwee 200 to 400 in the 'Average Number of Page' input box";
 }
 
 /* Function removes the proactive input hints */
@@ -198,12 +201,13 @@ function generateNewSaveInput(boxId, storedData, maxAmount)
         var dataArray = data.split("||");
 
         // If the array of stored data contains input value, we don't need to modify anything, return itself.
-        if (dataArray.includes(inputVal))
-            return data;
+        // if (dataArray.includes(inputVal))
+        //     return data;
 
-        // If the array exceed the MAX amount allow, remove the 1st element from "data" string
+        /* If the array exceed the MAX amount allow, remove the 1st element from "data" string.
+         * Do not remove anything if the maxAmount is NULL */
         var arrLen = dataArray.length
-        if (arrLen >= maxAmount)
+        if (maxAmount != null && arrLen >= maxAmount)
         {
             // Get the the index of array we start to keep to maintain the maxAmount requirement (even after adding new value)
             var startIdx = arrLen - maxAmount + 1; 
@@ -236,7 +240,7 @@ function saveBooksInput()
     if (typeof(Storage) !== "undefined")
     {
         // Get the newBookSave for saving to storage
-        var newBookSave = generateNewSaveInput("book-num", localStorage.booksNumHistory, 3);
+        var newBookSave = generateNewSaveInput("book-num", localStorage.booksNumHistory, null);
 
         // If the newBookSave is not "undefined", then save it
         if (typeof(newBookSave) !== "undefined")
@@ -251,7 +255,7 @@ function savePagesInput()
     if (typeof(Storage) !== "undefined")
     {
         // Get the newPageSave for saving to storage
-        var newPageSave = generateNewSaveInput("page-num", localStorage.pagesNumHistory, 3);
+        var newPageSave = generateNewSaveInput("page-num", localStorage.pagesNumHistory, null);
 
         // If the newSaveInput is not "undefined", then save it
         if (typeof(newPageSave) !== "undefined")
@@ -262,8 +266,9 @@ function savePagesInput()
 /* A general function for suggest input to input box from stored data 
  * @storedData: the data stored in the LocalStorage which we want to generate suggestions from 
  * @listId: the ID of the list in HTML that we want to place the suggestions
- * @boxId: the input box which user potentially want to fill with the suggested data */
-function suggestInput(storedData, listId, boxId)
+ * @boxId: the input box which user potentially want to fill with the suggested data 
+ * @suggestMax: max number of suggestions allowed */
+function suggestInput(storedData, listId, boxId, suggestMax)
 {
     // Clear the <ul>, which is the suggestion area before appending 
     clearSuggestion(listId);
@@ -274,11 +279,23 @@ function suggestInput(storedData, listId, boxId)
         // Split to a list of values for suggestion
         var allData = storedData.split("||");
 
+        // Count number of items suggested & track the suggested item using a HashSet
+        var count = 0;
+        var liSet = new Set();
+
         // Add the suggestions to a <ul> list in HTML
-        for (let i = 0; i < allData.length; ++i)
+        for (let i = allData.length - 1; i >= 0 && count < suggestMax ; --i)
         {
             // Access one data
             var data = allData[i];
+
+            // Don't suggest if an item is suggested already
+            if (liSet.has(data))
+                continue;
+
+            // Add the item to the set and increase the count
+            liSet.add(data);
+            count++;
 
             // Create the list item
             var listItem = document.createElement("li");
@@ -301,13 +318,13 @@ function suggestInput(storedData, listId, boxId)
 /* Function specialized for suggesting input for bookNums input box */
 function suggestBooksInput()
 {
-    suggestInput(localStorage.booksNumHistory, "book-num-suggestion", "book-num");
+    suggestInput(localStorage.booksNumHistory, "book-num-suggestion", "book-num", maxNumOfSuggestion);
 }
 
 /* Function specialized for suggesting input for pageNums input box */
 function suggestPagesInput()
 {
-    suggestInput(localStorage.pagesNumHistory, "page-num-suggestion", "page-num");
+    suggestInput(localStorage.pagesNumHistory, "page-num-suggestion", "page-num", maxNumOfSuggestion);
 }
 
 /* Function clear the suggestion that shown in a list by setting it to "" 
@@ -373,7 +390,7 @@ function updateMeterFromSubmit()
         document.getElementById("completeness-meter").innerHTML = "Your Progress: 100% <br>Congratulation, calculation done!";
 }
 
-// Funtion closes input suggestions if a click outside of input boxes are detected
+/* Funtion closes input suggestions if a click outside of input boxes are detected */
 function closeSuggestOnOutsideClick()
 {
     // Check if the book and page input box is clicked or not
@@ -386,6 +403,88 @@ function closeSuggestOnOutsideClick()
     if (!isPageInputClick)
         clearSuggestion("page-num-suggestion");
 }
+
+/* Function generates featured content */
+function GetFeaturedContent(storedData, s1, s2, m1, m2, l1, l2)
+{
+    // Check if the local storage is supported
+    if (typeof(Storage) !== "undefined")
+    {
+        // Cast parameters to numbers
+        s1 = parseFloat(s1);
+        s2 = parseFloat(s2);
+        m1 = parseFloat(m1);
+        m2 = parseFloat(m2);
+        l1 = parseFloat(l1);
+        l2 = parseFloat(l2);
+
+        // If storedData is not NULL
+        if (storedData)
+        {
+            // Split to a list of values for suggestion
+            var allData = storedData.split("||");
+            var num = allData.length;
+
+            // Boolean judges if numbers within these ranges exists
+            var hasRange1 = false;
+            var hasRange2 = false;
+            var hasRange3 = false;
+
+            // Check if 3 types of data exists or not
+            for (let i = 0; i < num; ++i)
+            {
+                var data = parseFloat(allData[i]);
+
+                if (data >= s1 && data <= s2)
+                    hasRange1 = true;
+                
+                if (data >= m1 && data <= m2)
+                    hasRange2 = true;
+
+                if (data >= l1 && data <= l2)
+                    hasRange3 = true;
+            }
+
+            // Provide Recommendation
+            if (num === 0 || !hasRange1)
+                return "Try a small value between " + s1 + " and " + s2;
+            else if (!hasRange2)
+                return "Try a medium value between " + m1 + " and " + m2;
+            else if (!hasRange3)
+                return "Try a medium value between " + l1 + " and " + l2;
+            else
+                return "";
+        }
+        else
+        {
+            // When there's no stored data, means user never input yet, ask users to try small numbers
+            return "Try a small value between " + s1 + " and " + s2;
+        }
+    }
+    
+    // If no local storage, return empty string
+    return "";
+}
+
+/* Function specialized for getting featured content for books input box */
+function getBookFeaturedContent()
+{
+    // Check if the local storage is supported and whether storedData exists
+    if (typeof(Storage) !== "undefined")
+    {
+        // Get the featured content
+        var bookFeaturedContent = GetFeaturedContent(localStorage.booksNumHistory, 30000, 40000, 2000000, 3000000, 100000000, 200000000);
+
+        // Assign the featured content information to the HTML slot for it
+        document.getElementById("featured-content-book").innerHTML = bookFeaturedContent;
+    }
+}
+
+
+
+
+
+
 
 
 
