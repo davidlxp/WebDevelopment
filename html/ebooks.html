@@ -145,7 +145,7 @@
 
                     <div id="book-num-header">
                         <h4> Number of books </h4>
-                        <input id="book-num" onmouseover="giveInputHint()" onkeydown="afterFirstCoach(); clearSuggestion('book-num-suggestion')" oninput="updateMeterFromInput()" onclick="suggestBooksInput()">
+                        <input id="book-num" onmouseover="giveInputHint()" onkeydown="afterFirstCoach(); clearSuggestion('book-num-suggestion')" oninput="updateMeter()" onclick="suggestBooksInput()">
                         <b class="coach-mark" id="coach-step1">&nbsp&nbsp &lt ENTER A NUMBER</b>
                         <br><ul id="book-num-suggestion" class="suggestion-zone"></ul>
                         <p id="input-hint"></p>
@@ -153,7 +153,7 @@
 
                     <div id="page-num-header">
                         <h4> Average number of pages per book </h4>
-                        <input id="page-num" onkeydown="afterSecondCoach(); clearSuggestion('page-num-suggestion')" oninput="updateMeterFromInput()" onclick="suggestPagesInput()">
+                        <input id="page-num" onkeydown="afterSecondCoach(); clearSuggestion('page-num-suggestion')" oninput="updateMeter()" onclick="suggestPagesInput()">
                         <button onclick="popHelp()">Input Help</button>
                         <b class="coach-mark" id="coach-step2" style="display:none">&nbsp&nbsp &lt ENTER A NUMBER</b>
                         <br><ul id="page-num-suggestion" class="suggestion-zone"></ul>

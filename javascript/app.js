@@ -136,7 +136,7 @@ function autofillSimpleCalc(books, pages)
     document.getElementById("page-num").value = parseFloat(pages);
 
     // Update the completeness meter
-    updateMeterFromInput();
+    updateMeter();
 }
 
 /* Function dynamically shows simple & complex calculator based on user's choice with this button */
@@ -330,10 +330,13 @@ function useSuggestion(val, boxId, listId)
 
     // Clear a suggestion list after suggestion
     clearSuggestion(listId);
+
+    // Update the progress bar accordingly
+    updateMeter();
 }
 
 /* Function modify completeness meter when user interact with input boxes */
-function updateMeterFromInput()
+function updateMeter()
 {
     // Get the input from input boxes
     var bookNumInput = document.getElementById("book-num").value;
