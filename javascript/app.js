@@ -1,6 +1,7 @@
 
-/* Variable defines number of suggestions allowed for input box */
-var maxNumOfSuggestion = 3;
+/* Variable Zone */
+var maxNumOfSuggestion = 3;     // Variable defines number of suggestions allowed for input box
+var userType = "";              // The user type based on the freqency of visit
 
 /* Listener checks the "click" status of whole page */
 document.addEventListener("click", (event) => {
@@ -87,14 +88,24 @@ function removeInputHint() {
 
 /* Function do the things after the 1st coach mark */
 function afterFirstCoach() {
-    document.getElementById("coach-step1").style.display="none";
-    document.getElementById("coach-step2").style.display="inline";
+
+    // Only run the coach-mark activation & deactivation when user is Unknown or Naive
+    if (userType == "Unknown" || userType == "Naive")
+    {
+        document.getElementById("coach-step1").style.display="none";
+        document.getElementById("coach-step2").style.display="inline";
+    }
 }
 
 /* Function do the things after the 2nd coach mark */
 function afterSecondCoach() {
-    document.getElementById("coach-step2").style.display="none";
-    document.getElementById("coach-step3").style.display="block";
+
+    // Only run the coach-mark activation & deactivation when user is Unknown or Naive
+    if (userType == "Unknown" || userType == "Naive")
+    {
+        document.getElementById("coach-step2").style.display="none";
+        document.getElementById("coach-step3").style.display="block";
+    }
 }
 
 /* Function shows the calculator */
@@ -480,6 +491,124 @@ function getBookFeaturedContent()
     }
 }
 
+/* Function checks if the level of the current user */
+function onStartUp()
+{
+    /* Check if the local storage is supported and whether storedData exists */
+    if (typeof(Storage) !== "undefined")
+    {
+        /* Check the user's visit times */
+        if (typeof(localStorage.usercount) === "undefined")
+            localStorage.usercount = 0;
+        else
+            localStorage.usercount++;
+
+        /* Get the user's # times of visit */
+        var userCount = localStorage.usercount;
+
+        /* Define userType based on # of visits of the users */
+        if (userCount < 0)
+            userType = "Unknown";
+        else if (userCount == 0)
+            userType = "Naive";
+        else if (userCount > 0 && userCount < 5 )
+            userType = "Novice";
+        else if (userCount >= 5 && userCount < 10)
+            userType = "Typical";
+        else if (userCount >= 10)
+            userType = "Advanced";
+    }
+    else
+        userType = "Unknown";
+
+    /* Show the user type on HTML page */
+    document.getElementById("show-user-type").innerHTML = "Your user type is " + userType + ". You visited " + localStorage.usercount + " times!";
+
+    /* Dynamically show features based on user type */
+    dynamicShowContent();
+}
+
+/* Function dynamically show content based on user type */
+function dynamicShowContent()
+{
+    if (userType === "Unknown" || userType === "Naive")
+    {
+        // Disable popover hint
+        document.getElementById("pop-over-help").style.display = "none";
+
+        // Disable expandable inputs
+        document.getElementById("expandable-button").style.display = "none";
+        document.getElementById("calculator").style.display = "block";
+
+        // Disable hidden information
+        document.getElementById("hidden-button").style.display = "none";
+
+        // Disable overflow menu for setting
+        document.getElementById("settings-button").style.display = "none";
+
+        // Disable autocomplete
+        document.getElementById("book-num-suggestion").style.display = "none";
+        document.getElementById("page-num-suggestion").style.display = "none";
+
+        // Disable completeness meter & next step
+        document.getElementById("completeness-meter").style.display = "none";
+
+        // Disable featured content
+        document.getElementById("featured-content-book").style.display = "none";
+    }
+    else if (userType === "Novice")
+    {
+        // Disable popover hint
+        document.getElementById("pop-over-help").style.display = "none";
+
+        // Disable coach mark. We only need to unshown the first coach-mark
+        document.getElementById("coach-step1").style.display = "none";
+
+        // Disable hidden information
+        document.getElementById("hidden-button").style.display = "none";
+
+        // Disable overflow menu for setting
+        document.getElementById("settings-button").style.display = "none";
+
+        // Disable autocomplete
+        document.getElementById("book-num-suggestion").style.display = "none";
+        document.getElementById("page-num-suggestion").style.display = "none";
+
+        // Disable completeness meter & next step
+        document.getElementById("completeness-meter").style.display = "none";
+
+        // Disable featured content
+        document.getElementById("featured-content-book").style.display = "none";
+    }
+    else if (userType === "Typical")
+    {
+        // Disable automated input hint
+        document.getElementById("input-hint").style.display = "none";
+
+        // Disable coach mark. We only need to unshown the first coach-mark
+        document.getElementById("coach-step1").style.display = "none";
+
+        // Disable wizard for switching between different types of calculators
+        document.getElementById("calc-switch-button").style.display = "none";
+
+        // Disable overflow menu for setting
+        document.getElementById("settings-button").style.display = "none";
+
+        // Disable featured content
+        document.getElementById("featured-content-book").style.display = "none";
+    }
+    else if (userType === "Advanced")
+    {
+        // Disable automated input hint
+        document.getElementById("input-hint").style.display = "none";
+
+        // Disable coach mark. We only need to unshown the first coach-mark
+        document.getElementById("coach-step1").style.display = "none";
+
+        // Disable wizard for switching between different types of calculators
+        document.getElementById("calc-switch-button").style.display = "none";
+    }
+}
 
 
 
@@ -489,10 +618,28 @@ function getBookFeaturedContent()
 
 
 
+
+
+
+/* Testing function which helps with changing user */
+function updateUser(userType)
+{
+    /* Update the value in local storage, so the user type will be reflected in the next round */
+    if (userType === "Unknown")
+        localStorage.usercount = -2;
+    else if (userType === "Naive")
+        localStorage.usercount = -1;
+    else if (userType === "Novice")
+        localStorage.usercount = 0;
+    else if (userType === "Typical")
+        localStorage.usercount = 4;
+    else if (userType === "Advanced")
+        localStorage.usercount = 9;
+}
 
 /* Testing function which helps with remove stored data */
-// function clearStorage()
-// {
-//     localStorage.removeItem("booksNumHistory");
-//     localStorage.removeItem("pagesNumHistory");
-// }
+function clearStorage()
+{
+    localStorage.removeItem("booksNumHistory");
+    localStorage.removeItem("pagesNumHistory");
+}
