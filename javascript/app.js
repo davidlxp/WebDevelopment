@@ -536,10 +536,6 @@ function dynamicShowContent()
         // Disable popover hint
         document.getElementById("pop-over-help").style.display = "none";
 
-        // Disable expandable inputs
-        document.getElementById("expandable-button").style.display = "none";
-        document.getElementById("calculator").style.display = "block";
-
         // Disable hidden information
         document.getElementById("hidden-button").style.display = "none";
 
@@ -560,6 +556,10 @@ function dynamicShowContent()
     {
         // Disable popover hint
         document.getElementById("pop-over-help").style.display = "none";
+
+        // Disable expandable inputs
+        document.getElementById("expandable-button").style.display = "none";
+        document.getElementById("calculator").style.display = "block";
 
         // Disable coach mark. We only need to unshown the first coach-mark
         document.getElementById("coach-step1").style.display = "none";
@@ -582,6 +582,10 @@ function dynamicShowContent()
     }
     else if (userType === "Typical")
     {
+        // Disable expandable inputs
+        document.getElementById("expandable-button").style.display = "none";
+        document.getElementById("calculator").style.display = "block";        
+
         // Disable automated input hint
         document.getElementById("input-hint").style.display = "none";
 
@@ -599,6 +603,10 @@ function dynamicShowContent()
     }
     else if (userType === "Advanced")
     {
+        // Disable expandable inputs
+        document.getElementById("expandable-button").style.display = "none";
+        document.getElementById("calculator").style.display = "block";
+        
         // Disable automated input hint
         document.getElementById("input-hint").style.display = "none";
 
@@ -642,4 +650,5 @@ function clearStorage()
 {
     localStorage.removeItem("booksNumHistory");
     localStorage.removeItem("pagesNumHistory");
+    localStorage.removeItem("usercount");
 }
