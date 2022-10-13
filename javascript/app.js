@@ -211,10 +211,6 @@ function generateNewSaveInput(boxId, storedData, maxAmount)
         // Turn the saved string into array
         var dataArray = data.split("||");
 
-        // If the array of stored data contains input value, we don't need to modify anything, return itself.
-        // if (dataArray.includes(inputVal))
-        //     return data;
-
         /* If the array exceed the MAX amount allow, remove the 1st element from "data" string.
          * Do not remove anything if the maxAmount is NULL */
         var arrLen = dataArray.length
@@ -522,7 +518,7 @@ function onStartUp()
         userType = "Unknown";
 
     /* Show the user type on HTML page */
-    document.getElementById("show-user-type").innerHTML = "Your user type is " + userType + ". You visited " + localStorage.usercount + " times!";
+    // document.getElementById("show-user-type").innerHTML = "Your user type is " + userType + ". You visited " + localStorage.usercount + " times!";
 
     /* Dynamically show features based on user type */
     dynamicShowContent();
